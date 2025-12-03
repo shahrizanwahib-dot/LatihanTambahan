@@ -85,7 +85,7 @@
         @media print {
             body { background: white; overflow: visible; }
             .slide { display: block !important; page-break-after: always; animation: none; margin-bottom: 40px; border-bottom: 2px dashed #ccc; padding-bottom: 20px; }
-            .nav-buttons, .progress-header { display: none !important; }
+            .nav-buttons, .progress-header, #submit-section { display: none !important; }
             .card-shadow { box-shadow: none; border: 1px solid #ccc; }
             .no-print { display: none; }
             .question-box { break-inside: avoid; border: none; padding: 5px 0; }
@@ -120,11 +120,11 @@
                 <div class="bg-blue-50 p-8 rounded-xl max-w-lg mx-auto text-left space-y-4 border-2 border-blue-100">
                     <div>
                         <label class="block text-gray-700 font-bold mb-1">Nama Penuh:</label>
-                        <input type="text" class="input-line" placeholder="Tulis nama anda di sini...">
+                        <input type="text" id="studentName" class="input-line" placeholder="Tulis nama anda di sini...">
                     </div>
                     <div>
                         <label class="block text-gray-700 font-bold mb-1">Kelas:</label>
-                        <input type="text" class="input-line" placeholder="Contoh: 3 Cemerlang">
+                        <input type="text" id="studentClass" class="input-line" placeholder="Contoh: 3 Cemerlang">
                     </div>
                 </div>
                 <p class="text-sm text-gray-400 mt-4">Sila jawab semua soalan dengan teliti.</p>
@@ -393,6 +393,12 @@
                     <button onclick="checkAllAnswers()" class="bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-xl shadow-lg transform transition hover:scale-105 flex items-center justify-center gap-2">
                         <i class="fas fa-check-circle"></i> Semak Semua Jawapan
                     </button>
+
+                    <!-- NEW: Google Sheets Button -->
+                    <button id="submitBtn" onclick="hantarKeGoogleSheets()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-xl shadow-lg flex items-center justify-center gap-2">
+                        <i class="fas fa-paper-plane"></i> Hantar ke Google Sheets
+                    </button>
+
                     <button onclick="window.print()" class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-3 px-6 rounded-xl shadow-lg flex items-center justify-center gap-2">
                         <i class="fas fa-print"></i> Cetak / Simpan PDF
                     </button>
@@ -416,8 +422,14 @@
     </div>
 
     <script>
+        // --- KONFIGURASI GOOGLE SHEETS ---
+        // URL Web App yang telah dimasukkan:
+        let GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwsHGKXUdf7afPMb7xnhsqj3OQzKK9UCWhCEZ293prd0AhduF2wVrWQV3Tfg5Z8DlhZPw/exec"; 
+        // ----------------------------------
+
         let currentSlide = 1;
         const totalSlides = 10;
+        let score = 0;
 
         function updateUI() {
             document.querySelectorAll('.slide').forEach(el => el.classList.remove('active'));
@@ -434,6 +446,21 @@
             if (direction === 1 && currentSlide < totalSlides) currentSlide++;
             else if (direction === -1 && currentSlide > 1) currentSlide--;
             updateUI();
+        }
+
+        function calculateScore() {
+            let currentScore = 0;
+            // Count Dropdowns (Exact)
+            document.querySelectorAll('select[data-ans]').forEach(select => {
+                if(select.value === select.dataset.ans) currentScore++;
+            });
+            // Count Inputs (Contains Keyword)
+            document.querySelectorAll('input[data-ans]').forEach(input => {
+                const userVal = input.value.trim().toLowerCase();
+                const correctVal = input.dataset.ans.toLowerCase();
+                if(userVal.includes(correctVal)) currentScore++;
+            });
+            return currentScore;
         }
 
         function checkAllAnswers() {
@@ -458,7 +485,77 @@
                 }
             });
 
-            alert("Semakan selesai! Sila semak jawapan yang ditandakan.");
+            const finalScore = calculateScore();
+            alert(`Semakan selesai! Markah anda: ${finalScore} mata.`);
+            score = finalScore;
+        }
+
+        // --- FUNGSI HANTAR KE GOOGLE SHEETS ---
+        function hantarKeGoogleSheets() {
+            // 1. Dapatkan Nama & Kelas
+            const nama = document.getElementById('studentName').value;
+            const kelas = document.getElementById('studentClass').value;
+
+            if(!nama || !kelas) {
+                alert("Sila isi Nama dan Kelas di Slaid 1 sebelum menghantar.");
+                changeSlide(-(currentSlide - 1)); // Go back to slide 1
+                return;
+            }
+
+            // 2. Semak URL (Kini sudah hardcoded)
+            if(!GOOGLE_SCRIPT_URL) {
+                const userUrl = prompt("Sila masukkan URL Google Web App anda:");
+                if(userUrl) {
+                    GOOGLE_SCRIPT_URL = userUrl;
+                } else {
+                    return;
+                }
+            }
+
+            // 3. Kumpul Jawapan (JSON format)
+            let allAnswers = {};
+            // Selects
+            document.querySelectorAll('select').forEach((el, index) => {
+                if(el.value) allAnswers[`Select_${index+1}`] = el.value;
+            });
+            // Inputs
+            document.querySelectorAll('input:not(#studentName):not(#studentClass)').forEach((el, index) => {
+                if(el.value) allAnswers[`Input_${index+1}`] = el.value;
+            });
+
+            // Update score latest
+            const finalScore = calculateScore();
+
+            // 4. Sediakan Data
+            const formData = new FormData();
+            formData.append('nama', nama);
+            formData.append('kelas', kelas);
+            formData.append('markah', finalScore);
+            formData.append('jawapan', JSON.stringify(allAnswers));
+
+            // 5. Hantar
+            const btn = document.getElementById('submitBtn');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Sedang Hantar...`;
+            btn.disabled = true;
+
+            fetch(GOOGLE_SCRIPT_URL, {
+                method: 'POST',
+                body: formData,
+                mode: 'no-cors' // Penting untuk Google Apps Script
+            })
+            .then(() => {
+                alert("✅ Berjaya! Jawapan anda telah direkodkan ke dalam Google Sheets.");
+                btn.innerHTML = `<i class="fas fa-check"></i> Telah Dihantar`;
+                btn.classList.remove('bg-blue-600', 'hover:bg-blue-700');
+                btn.classList.add('bg-green-600', 'hover:bg-green-700');
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert("❌ Ralat. Sila pastikan URL skrip betul dan internet bersambung.");
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            });
         }
 
         // --- Navigasi Papan Kekunci (Keyboard Support) ---
