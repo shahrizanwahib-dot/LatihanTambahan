@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slaid Latihan Intensif: Keluarga & Haiwan</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: #e0f2fe;
+            overflow-x: hidden;
+        }
+        h1, h2, h3 {
+            font-family: 'Comic Neue', cursive;
+        }
+        .slide {
+            display: none;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        .slide.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .input-line {
+            border: none;
+            border-bottom: 2px solid #94a3b8;
+            width: 100%;
+            padding: 8px;
+            outline: none;
+            transition: border-color 0.3s;
+            background: transparent;
+            font-size: 1em;
+        }
+        .input-line:focus {
+            border-bottom-color: #2563eb;
+        }
+        .card-shadow {
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+        }
+        .answer-key {
+            display: none;
+            margin-top: 5px;
+            padding: 8px;
+            background-color: #dcfce7;
+            border: 1px solid #86efac;
+            border-radius: 6px;
+            color: #166534;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+        .question-box {
+            background-color: #f8fafc;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+        }
+        
+        /* Progress Bar */
+        .progress-container {
+            width: 100%;
+            background-color: #cbd5e1;
+            border-radius: 999px;
+            height: 12px;
+            margin-bottom: 20px;
+        }
+        .progress-bar {
+            height: 100%;
+            background-color: #3b82f6;
+            border-radius: 999px;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        /* Print Styles */
+        @media print {
+            body { background: white; overflow: visible; }
+            .slide { display: block !important; page-break-after: always; animation: none; margin-bottom: 40px; border-bottom: 2px dashed #ccc; padding-bottom: 20px; }
+            .nav-buttons, .progress-header { display: none !important; }
+            .card-shadow { box-shadow: none; border: 1px solid #ccc; }
+            .no-print { display: none; }
+            .question-box { break-inside: avoid; border: none; padding: 5px 0; }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-4">
+
+    <!-- Progress Header -->
+    <div class="progress-header w-full max-w-5xl fixed top-0 left-0 right-0 mx-auto p-4 z-50 bg-[#e0f2fe]">
+        <div class="flex justify-between text-sm font-bold text-gray-600 mb-2">
+            <span>Kemajuan Murid</span>
+            <span id="slide-count">1 / 10</span>
+        </div>
+        <div class="progress-container shadow-inner">
+            <div id="progress-bar" class="progress-bar"></div>
+        </div>
+    </div>
+
+    <div class="h-20 w-full block md:hidden"></div>
+
+    <!-- Main Content -->
+    <div class="w-full max-w-5xl bg-white rounded-2xl card-shadow p-6 md:p-10 min-h-[70vh] flex flex-col relative mt-8">
+
+        <!-- SLIDE 1: PENGENALAN -->
+        <div id="slide-1" class="slide active">
+            <div class="text-center space-y-6 py-10">
+                <div class="text-6xl mb-4">🏠👨‍👩‍👧‍👦🐈</div>
+                <h1 class="text-4xl md:text-5xl font-bold text-blue-600">Keluarga & Haiwan Peliharaan</h1>
+                <p class="text-xl text-gray-600">Latihan Intensif (55 Minit)</p>
+                
+                <div class="bg-blue-50 p-8 rounded-xl max-w-lg mx-auto text-left space-y-4 border-2 border-blue-100">
+                    <div>
+                        <label class="block text-gray-700 font-bold mb-1">Nama Penuh:</label>
+                        <input type="text" class="input-line" placeholder="Tulis nama anda di sini...">
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 font-bold mb-1">Kelas:</label>
+                        <input type="text" class="input-line" placeholder="Contoh: 3 Cemerlang">
+                    </div>
+                </div>
+                <p class="text-sm text-gray-400 mt-4">Sila jawab semua soalan dengan teliti.</p>
+                <p class="text-xs text-blue-400 mt-2 font-bold bg-blue-50 inline-block px-3 py-1 rounded-full"><i class="fas fa-keyboard mr-1"></i> Tip: Anda boleh guna kekunci panah (⬅️ ➡️) untuk ke slaid seterusnya.</p>
+            </div>
+        </div>
+
+        <!-- SLIDE 2: BAHAGIAN A (KOSA KATA - 12 SOALAN) -->
+        <div id="slide-2" class="slide">
+            <div class="border-l-8 border-pink-500 pl-6 mb-6">
+                <h2 class="text-3xl font-bold text-pink-600">Bahagian A: Kosa Kata Keluarga</h2>
+                <p class="text-lg text-gray-500">Pilih jawapan yang betul. (12 Soalan)</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- Soalan 1-12 -->
+                <div class="question-box"><p class="font-bold">1. Bapa kepada bapa kita.</p>
+                    <select class="w-full p-2 border rounded mt-1 bg-white q-a" data-ans="Datuk"><option value="">-Pilih-</option><option value="Datuk">Datuk</option><option value="Nenek">Nenek</option></select><div class="answer-key">J: Datuk</div></div>
+                
+                <div class="question-box"><p class="font-bold">2. Ibu kepada ibu kita.</p>
+                    <select class="w-full p-2 border rounded mt-1 bg-white q-a" data-ans="Nenek"><option value="">-Pilih-</option><option value="Datuk">Datuk</option><option value="Nenek">Nenek</option></select><div class="answer-key">J: Nenek</div></div>
+                
+                <div class="question-box"><p class="font-bold">3. Adik perempuan ibu.</p>
+                    <select class="w-full p-2 border rounded mt-1 bg-white q-a" data-ans="Ibu Saudara"><option value="">-Pilih-</option><option value="Ibu Saudara">Ibu Saudara</option><option value="Bapa Saudara">Bapa Saudara</option></select><div class="answer-key">J: Ibu Saudara</div></div>
+
+                <div class="question-box"><p class="font-bold">4. Anak kepada bapa saudara.</p>
+                    <select class="w-full p-2 border rounded mt-1 bg-white q-a" data-ans="Sepupu"><option value="">-Pilih-</option><option value="Adik">Adik</option><option value="Sepupu">Sepupu</option></select><div class="answer-key">J: Sepupu</div></div>
+
+                <div class="question-box"><p class="font-bold">5. Saudara lelaki yang lebih tua.</p>
+                    <select class="w-full p-2 border rounded mt-1 bg-white q-a" data-ans="Abang"><option value="">-Pilih-</option><option value="Kakak">Kakak</option><option value="Abang">Abang</option></select><div class="answer-key">J: Abang</div></div>
+
+                <div class="question-box"><p class="font-bold">6. Saudara perempuan yang lebih tua.</p>
+                    <select class="w-full p-2 border rounded mt-1 bg-white q-a" data-ans="Kakak"><option value="">-Pilih-</option><option value="Kakak">Kakak</option><option value="Adik">Adik</option></select><div class="answer-key">J: Kakak</div></div>
+
+                <div class="question-box"><p class="font-bold">7. Adik-beradik paling muda.</p>
+                    <select class="w-full p-2 border rounded mt-1 bg-white q-a" data-ans="Bongsu"><option value="">-Pilih-</option><option value="Sulung">Sulung</option><option value="Bongsu">Bongsu</option></select><div class="answer-key">J: Bongsu</div></div>
+
+                <div class="question-box"><p class="font-bold">8. Anak pertama dalam keluarga.</p>
+                    <select class="w-full p-2 border rounded mt-1 bg-white q-a" data-ans="Sulung"><option value="">-Pilih-</option><option value="Sulung">Sulung</option><option value="Tunggal">Tunggal</option></select><div class="answer-key">J: Sulung</div></div>
+                
+                <div class="question-box"><p class="font-bold">9. Anak kepada anak kita.</p>
+                    <select class="w-full p-2 border rounded mt-1 bg-white q-a" data-ans="Cucu"><option value="">-Pilih-</option><option value="Cicit">Cicit</option><option value="Cucu">Cucu</option></select><div class="answer-key">J: Cucu</div></div>
+
+                <div class="question-box"><p class="font-bold">10. Isteri kepada bapa saudara.</p>
+                    <select class="w-full p-2 border rounded mt-1 bg-white q-a" data-ans="Ibu Saudara"><option value="">-Pilih-</option><option value="Ibu Saudara">Ibu Saudara</option><option value="Nenek">Nenek</option></select><div class="answer-key">J: Ibu Saudara</div></div>
+
+                <div class="question-box"><p class="font-bold">11. Suami kepada kakak.</p>
+                    <select class="w-full p-2 border rounded mt-1 bg-white q-a" data-ans="Abang Ipar"><option value="">-Pilih-</option><option value="Abang Ipar">Abang Ipar</option><option value="Adik Ipar">Adik Ipar</option></select><div class="answer-key">J: Abang Ipar</div></div>
+
+                <div class="question-box"><p class="font-bold">12. Satu-satunya anak dalam keluarga.</p>
+                    <select class="w-full p-2 border rounded mt-1 bg-white q-a" data-ans="Anak Tunggal"><option value="">-Pilih-</option><option value="Anak Emas">Anak Emas</option><option value="Anak Tunggal">Anak Tunggal</option></select><div class="answer-key">J: Anak Tunggal</div></div>
+            </div>
+        </div>
+
+        <!-- SLIDE 3: BAHAGIAN B (PETIKAN 1 & 2) -->
+        <div id="slide-3" class="slide">
+            <div class="border-l-8 border-yellow-500 pl-6 mb-6">
+                <h2 class="text-3xl font-bold text-yellow-600">Bahagian B: Bacaan Petikan</h2>
+                <p class="text-lg text-gray-500">Baca kedua-dua petikan di bawah.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 overflow-y-auto max-h-[60vh]">
+                <!-- Petikan 1 -->
+                <div class="bg-yellow-50 p-6 rounded-xl border border-yellow-200">
+                    <h3 class="font-bold text-center text-lg mb-2 text-yellow-800">Petikan 1: Keluarga Aiman</h3>
+                    <p class="text-sm leading-relaxed mb-2">
+                        Nama saya Aiman. Bapa saya, <strong>Encik Razak</strong>, ialah seorang guru. Ibu saya, <strong>Puan Salmah</strong>, seorang suri rumah yang rajin memasak. Saya ada kakak bernama Anis dan adik lelaki bernama Azim.
+                    </p>
+                    <p class="text-sm leading-relaxed">
+                        Kami membela seekor kucing bernama <strong>Si Comel</strong>. Bulunya oren dan putih. Selain itu, bapa memelihara lima ekor <strong>ikan emas</strong>. Anis bertugas memberi makan ikan pada waktu pagi.
+                    </p>
+                </div>
+
+                <!-- Petikan 2 -->
+                <div class="bg-blue-50 p-6 rounded-xl border border-blue-200">
+                    <h3 class="font-bold text-center text-lg mb-2 text-blue-800">Petikan 2: Hobi Kami</h3>
+                    <p class="text-sm leading-relaxed mb-2">
+                        Pada hujung minggu, keluarga Aiman suka berkebun. Bapa menanam pokok cili dan terung di belakang rumah. Ibu pula menanam pokok bunga ros yang cantik.
+                    </p>
+                    <p class="text-sm leading-relaxed">
+                        Azim suka menangkap <strong>belalang</strong> di dalam semak, tetapi dia akan melepaskannya semula. Pada waktu petang, kami sekeluarga akan berbasikal di taman rekreasi. Badan kami menjadi sihat dan cergas.
+                    </p>
+                </div>
+            </div>
+            <p class="text-center mt-4 text-sm text-gray-500 font-bold">Tekan 'Seterusnya' untuk menjawab 10 soalan pemahaman.</p>
+        </div>
+
+        <!-- SLIDE 4: BAHAGIAN B (SOALAN PEMAHAMAN - 10 SOALAN) -->
+        <div id="slide-4" class="slide">
+             <div class="border-l-8 border-yellow-500 pl-6 mb-6">
+                <h2 class="text-3xl font-bold text-yellow-600">Bahagian B: Soalan Pemahaman</h2>
+                <p class="text-lg text-gray-500">Jawab soalan berikut berdasarkan Petikan 1 dan 2. (10 Soalan)</p>
+            </div>
+
+            <div class="grid grid-cols-1 gap-4 overflow-y-auto max-h-[60vh] pr-2">
+                <div><label class="font-bold text-sm">1. Apakah pekerjaan Encik Razak?</label><input type="text" class="input-line q-b" data-ans="Guru"><div class="answer-key">Guru</div></div>
+                <div><label class="font-bold text-sm">2. Siapakah yang rajin memasak?</label><input type="text" class="input-line q-b" data-ans="Ibu"><div class="answer-key">Puan Salmah / Ibu</div></div>
+                <div><label class="font-bold text-sm">3. Berapakah jumlah adik-beradik Aiman?</label><input type="text" class="input-line q-b" data-ans="Tiga"><div class="answer-key">Tiga orang</div></div>
+                <div><label class="font-bold text-sm">4. Apakah nama kucing Aiman?</label><input type="text" class="input-line q-b" data-ans="Comel"><div class="answer-key">Si Comel</div></div>
+                <div><label class="font-bold text-sm">5. Siapakah yang memberi makan ikan?</label><input type="text" class="input-line q-b" data-ans="Anis"><div class="answer-key">Anis / Kakak</div></div>
+                <div><label class="font-bold text-sm">6. Apakah yang ditanam oleh bapa?</label><input type="text" class="input-line q-b" data-ans="Cili"><div class="answer-key">Pokok cili dan terung</div></div>
+                <div><label class="font-bold text-sm">7. Ibu menanam pokok bunga apa?</label><input type="text" class="input-line q-b" data-ans="Ros"><div class="answer-key">Bunga ros</div></div>
+                <div><label class="font-bold text-sm">8. Haiwan apakah yang ditangkap oleh Azim?</label><input type="text" class="input-line q-b" data-ans="Belalang"><div class="answer-key">Belalang</div></div>
+                <div><label class="font-bold text-sm">9. Bilakah mereka berbasikal?</label><input type="text" class="input-line q-b" data-ans="Petang"><div class="answer-key">Waktu petang</div></div>
+                <div><label class="font-bold text-sm">10. Mengapakah mereka beriadah?</label><input type="text" class="input-line q-b" data-ans="Sihat"><div class="answer-key">Supaya badan sihat</div></div>
+            </div>
+        </div>
+
+        <!-- SLIDE 5: BAHAGIAN C (TATABAHASA - 12 SOALAN) -->
+        <div id="slide-5" class="slide">
+            <div class="border-l-8 border-green-500 pl-6 mb-6">
+                <h2 class="text-3xl font-bold text-green-600">Bahagian C: Tatabahasa</h2>
+                <p class="text-lg text-gray-500">Penjodoh Bilangan & Kata Hubung. (12 Soalan)</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-base overflow-y-auto max-h-[60vh]">
+                <!-- Penjodoh Bilangan -->
+                <div class="bg-white p-3 border rounded shadow-sm">1. Ayah membeli <input type="text" class="border-b-2 w-24 text-center q-c font-bold" data-ans="seekor"> burung kakak tua. <div class="answer-key">seekor</div></div>
+                <div class="bg-white p-3 border rounded shadow-sm">2. Ali memakai <input type="text" class="border-b-2 w-24 text-center q-c font-bold" data-ans="sepasang"> kasut sukan. <div class="answer-key">sepasang</div></div>
+                <div class="bg-white p-3 border rounded shadow-sm">3. Ibu memotong <input type="text" class="border-b-2 w-24 text-center q-c font-bold" data-ans="sebiji"> tembikai. <div class="answer-key">sebiji</div></div>
+                <div class="bg-white p-3 border rounded shadow-sm">4. Kakak memberi adik <input type="text" class="border-b-2 w-24 text-center q-c font-bold" data-ans="sepotong"> kek. <div class="answer-key">sepotong</div></div>
+                <div class="bg-white p-3 border rounded shadow-sm">5. Pak Abu ada <input type="text" class="border-b-2 w-24 text-center q-c font-bold" data-ans="sebuah"> kereta baharu. <div class="answer-key">sebuah</div></div>
+                <div class="bg-white p-3 border rounded shadow-sm">6. Adik makan <input type="text" class="border-b-2 w-24 text-center q-c font-bold" data-ans="setongkol"> jagung rebus. <div class="answer-key">setongkol</div></div>
+                
+                <!-- Kata Hubung/Sendi -->
+                <div class="bg-white p-3 border rounded shadow-sm">7. Saya suka kucing <input type="text" class="border-b-2 w-24 text-center q-c font-bold" data-ans="tetapi"> takut anjing. <div class="answer-key">tetapi</div></div>
+                <div class="bg-white p-3 border rounded shadow-sm">8. Abu <input type="text" class="border-b-2 w-24 text-center q-c font-bold" data-ans="dan"> Ali pergi ke sekolah. <div class="answer-key">dan</div></div>
+                <div class="bg-white p-3 border rounded shadow-sm">9. Awak mahu teh <input type="text" class="border-b-2 w-24 text-center q-c font-bold" data-ans="atau"> kopi? <div class="answer-key">atau</div></div>
+                <div class="bg-white p-3 border rounded shadow-sm">10. Kucing itu tidur <input type="text" class="border-b-2 w-24 text-center q-c font-bold" data-ans="di"> bawah kerusi. <div class="answer-key">di</div></div>
+                <div class="bg-white p-3 border rounded shadow-sm">11. Bapa baru pulang <input type="text" class="border-b-2 w-24 text-center q-c font-bold" data-ans="dari"> pejabat. <div class="answer-key">dari</div></div>
+                <div class="bg-white p-3 border rounded shadow-sm">12. Ibu memasak <input type="text" class="border-b-2 w-24 text-center q-c font-bold" data-ans="sambil"> mendengar radio. <div class="answer-key">sambil</div></div>
+            </div>
+        </div>
+
+        <!-- SLIDE 6: BAHAGIAN D (DUNIA HAIWAN - 10 SOALAN) -->
+        <div id="slide-6" class="slide">
+            <div class="border-l-8 border-indigo-500 pl-6 mb-6">
+                <h2 class="text-3xl font-bold text-indigo-600">Bahagian D: Dunia Haiwan</h2>
+                <p class="text-lg text-gray-500">Bunyi, Gerakan & Habitat. (10 Soalan)</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 overflow-y-auto max-h-[60vh]">
+                <!-- Bunyi -->
+                <div class="bg-indigo-50 p-3 rounded flex justify-between items-center">
+                    <span>1. Bunyi Kucing 🐈</span>
+                    <select class="p-1 border rounded q-d" data-ans="Mengiau"><option>-</option><option value="Mengiau">Mengiau</option><option value="Menyalak">Menyalak</option></select>
+                </div>
+                <div class="bg-indigo-50 p-3 rounded flex justify-between items-center">
+                    <span>2. Bunyi Anjing 🐕</span>
+                    <select class="p-1 border rounded q-d" data-ans="Menyalak"><option>-</option><option value="Mengaum">Mengaum</option><option value="Menyalak">Menyalak</option></select>
+                </div>
+                <div class="bg-indigo-50 p-3 rounded flex justify-between items-center">
+                    <span>3. Bunyi Itik 🦆</span>
+                    <select class="p-1 border rounded q-d" data-ans="Kuek"><option>-</option><option value="Kuek">Kuek-kuek</option><option value="Berkokok">Berkokok</option></select>
+                </div>
+                <div class="bg-indigo-50 p-3 rounded flex justify-between items-center">
+                    <span>4. Bunyi Harimau 🐅</span>
+                    <select class="p-1 border rounded q-d" data-ans="Mengaum"><option>-</option><option value="Mengaum">Mengaum</option><option value="Mengembek">Mengembek</option></select>
+                </div>
+                
+                <!-- Pergerakan -->
+                <div class="bg-indigo-50 p-3 rounded flex justify-between items-center">
+                    <span>5. Burung bergerak secara...</span>
+                    <select class="p-1 border rounded q-d" data-ans="Terbang"><option>-</option><option value="Terbang">Terbang</option><option value="Merayap">Merayap</option></select>
+                </div>
+                <div class="bg-indigo-50 p-3 rounded flex justify-between items-center">
+                    <span>6. Ikan bergerak secara...</span>
+                    <select class="p-1 border rounded q-d" data-ans="Berenang"><option>-</option><option value="Berlari">Berlari</option><option value="Berenang">Berenang</option></select>
+                </div>
+                <div class="bg-indigo-50 p-3 rounded flex justify-between items-center">
+                    <span>7. Katak bergerak secara...</span>
+                    <select class="p-1 border rounded q-d" data-ans="Melompat"><option>-</option><option value="Melompat">Melompat</option><option value="Menyusur">Menyusur</option></select>
+                </div>
+                 <div class="bg-indigo-50 p-3 rounded flex justify-between items-center">
+                    <span>8. Ular bergerak secara...</span>
+                    <select class="p-1 border rounded q-d" data-ans="Menyusur"><option>-</option><option value="Menyusur">Menyusur</option><option value="Terbang">Terbang</option></select>
+                </div>
+
+                <!-- Habitat -->
+                <div class="bg-indigo-50 p-3 rounded flex justify-between items-center">
+                    <span>9. Ikan Paus tinggal di...</span>
+                    <select class="p-1 border rounded q-d" data-ans="Laut"><option>-</option><option value="Laut">Laut</option><option value="Hutan">Hutan</option></select>
+                </div>
+                <div class="bg-indigo-50 p-3 rounded flex justify-between items-center">
+                    <span>10. Monyet tinggal di...</span>
+                    <select class="p-1 border rounded q-d" data-ans="Hutan"><option>-</option><option value="Air">Air</option><option value="Hutan">Hutan/Pokok</option></select>
+                </div>
+            </div>
+            <div class="answer-key text-center mt-2">Semak jawapan anda di akhir sesi.</div>
+        </div>
+
+        <!-- SLIDE 7: BAHAGIAN E (SUSUN AYAT - 10 SOALAN) -->
+        <div id="slide-7" class="slide">
+            <div class="border-l-8 border-purple-500 pl-6 mb-6">
+                <h2 class="text-3xl font-bold text-purple-600">Bahagian E: Susun Ayat</h2>
+                <p class="text-lg text-gray-500">Susun perkataan menjadi ayat yang betul. (10 Soalan)</p>
+            </div>
+
+            <div class="space-y-4 overflow-y-auto max-h-[60vh] pr-2">
+                <!-- S1-S5 -->
+                <div><div class="bg-purple-100 p-2 rounded text-sm font-bold">1. laju. / Hamster / berlari / itu / sangat</div><input class="w-full border p-2 rounded mt-1" placeholder="Tulis..."> <div class="answer-key">Hamster itu berlari sangat laju.</div></div>
+                <div><div class="bg-purple-100 p-2 rounded text-sm font-bold">2. sayang / Kami / keluarga. / ahli / semua</div><input class="w-full border p-2 rounded mt-1" placeholder="Tulis..."> <div class="answer-key">Kami sayang semua ahli keluarga.</div></div>
+                <div><div class="bg-purple-100 p-2 rounded text-sm font-bold">3. makan / suka / Arnab / merah. / lobak</div><input class="w-full border p-2 rounded mt-1" placeholder="Tulis..."> <div class="answer-key">Arnab suka makan lobak merah.</div></div>
+                <div><div class="bg-purple-100 p-2 rounded text-sm font-bold">4. membersihkan / Ayah / ikan. / kolam / sedang</div><input class="w-full border p-2 rounded mt-1" placeholder="Tulis..."> <div class="answer-key">Ayah sedang membersihkan kolam ikan.</div></div>
+                <div><div class="bg-purple-100 p-2 rounded text-sm font-bold">5. memasak / dapur. / Ibu / di / gulai</div><input class="w-full border p-2 rounded mt-1" placeholder="Tulis..."> <div class="answer-key">Ibu memasak gulai di dapur.</div></div>
+                
+                <!-- S6-S10 -->
+                <div><div class="bg-purple-100 p-2 rounded text-sm font-bold">6. bermain / Adik / bola / di / taman.</div><input class="w-full border p-2 rounded mt-1" placeholder="Tulis..."> <div class="answer-key">Adik bermain bola di taman.</div></div>
+                <div><div class="bg-purple-100 p-2 rounded text-sm font-bold">7. tidur / Kucing / itu / sofa. / bawah / di</div><input class="w-full border p-2 rounded mt-1" placeholder="Tulis..."> <div class="answer-key">Kucing itu tidur di bawah sofa.</div></div>
+                <div><div class="bg-purple-100 p-2 rounded text-sm font-bold">8. Nenek / cerita / suka / membaca / buku.</div><input class="w-full border p-2 rounded mt-1" placeholder="Tulis..."> <div class="answer-key">Nenek suka membaca buku cerita.</div></div>
+                <div><div class="bg-purple-100 p-2 rounded text-sm font-bold">9. berkicau / Burung / pagi. / pada / waktu</div><input class="w-full border p-2 rounded mt-1" placeholder="Tulis..."> <div class="answer-key">Burung berkicau pada waktu pagi.</div></div>
+                <div><div class="bg-purple-100 p-2 rounded text-sm font-bold">10. menyiram / Kakak / bunga / petang. / setiap</div><input class="w-full border p-2 rounded mt-1" placeholder="Tulis..."> <div class="answer-key">Kakak menyiram bunga setiap petang.</div></div>
+            </div>
+        </div>
+
+        <!-- SLIDE 8: BAHAGIAN F (TEKA-TEKI - 10 SOALAN) -->
+        <div id="slide-8" class="slide">
+            <div class="border-l-8 border-teal-500 pl-6 mb-6">
+                <h2 class="text-3xl font-bold text-teal-600">Bahagian F: Teka-teki Haiwan</h2>
+                <p class="text-lg text-gray-500">Baca pembayang dan teka haiwan. (10 Soalan)</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 overflow-y-auto max-h-[60vh] pr-2">
+                <div class="bg-teal-50 p-4 rounded-lg"><p class="italic text-sm mb-2">1. Badan besar, hidung panjang (belalai).</p><input class="input-line q-f" data-ans="Gajah"><div class="answer-key">Gajah</div></div>
+                <div class="bg-teal-50 p-4 rounded-lg"><p class="italic text-sm mb-2">2. Telinga panjang, suka lompat, makan lobak.</p><input class="input-line q-f" data-ans="Arnab"><div class="answer-key">Arnab</div></div>
+                <div class="bg-teal-50 p-4 rounded-lg"><p class="italic text-sm mb-2">3. Leher panjang, makan daun tinggi.</p><input class="input-line q-f" data-ans="Zirafah"><div class="answer-key">Zirafah</div></div>
+                <div class="bg-teal-50 p-4 rounded-lg"><p class="italic text-sm mb-2">4. Raja rimba, suka mengaum.</p><input class="input-line q-f" data-ans="Singa"><div class="answer-key">Singa</div></div>
+                <div class="bg-teal-50 p-4 rounded-lg"><p class="italic text-sm mb-2">5. Tiada kaki, menyusur, berbisa.</p><input class="input-line q-f" data-ans="Ular"><div class="answer-key">Ular</div></div>
+                <div class="bg-teal-50 p-4 rounded-lg"><p class="italic text-sm mb-2">6. Suka makan pisang, pandai memanjat.</p><input class="input-line q-f" data-ans="Monyet"><div class="answer-key">Monyet</div></div>
+                <div class="bg-teal-50 p-4 rounded-lg"><p class="italic text-sm mb-2">7. Tinggal di kutub sejuk, jalan terkedek-kedek.</p><input class="input-line q-f" data-ans="Penguin"><div class="answer-key">Penguin</div></div>
+                <div class="bg-teal-50 p-4 rounded-lg"><p class="italic text-sm mb-2">8. Badan belang hitam putih, rupa macam kuda.</p><input class="input-line q-f" data-ans="Zebra"><div class="answer-key">Zebra</div></div>
+                <div class="bg-teal-50 p-4 rounded-lg"><p class="italic text-sm mb-2">9. Boleh terbang, ada kepak warna-warni.</p><input class="input-line q-f" data-ans="Rama"><div class="answer-key">Rama-rama</div></div>
+                <div class="bg-teal-50 p-4 rounded-lg"><p class="italic text-sm mb-2">10. Hasilkan madu, boleh menyengat.</p><input class="input-line q-f" data-ans="Lebah"><div class="answer-key">Lebah</div></div>
+            </div>
+        </div>
+
+        <!-- SLIDE 9: BAHAGIAN G (BINA AYAT - 10 SOALAN) -->
+        <div id="slide-9" class="slide">
+            <div class="border-l-8 border-orange-500 pl-6 mb-6">
+                <h2 class="text-3xl font-bold text-orange-600">Bahagian G: Bina Ayat</h2>
+                <p class="text-lg text-gray-500">Bina ayat mudah berdasarkan perkataan yang diberi. (10 Soalan)</p>
+            </div>
+
+            <div class="grid grid-cols-1 gap-4 overflow-y-auto max-h-[60vh] pr-2">
+                <div class="p-2 border rounded"><span class="font-bold text-orange-700">1. Ibu / memasak:</span> <input class="w-full bg-orange-50 p-1 border-b border-orange-300"> <div class="answer-key">Contoh: Ibu sedang memasak di dapur.</div></div>
+                <div class="p-2 border rounded"><span class="font-bold text-orange-700">2. Ayah / kereta:</span> <input class="w-full bg-orange-50 p-1 border-b border-orange-300"> <div class="answer-key">Contoh: Ayah membasuh kereta baharunya.</div></div>
+                <div class="p-2 border rounded"><span class="font-bold text-orange-700">3. Kucing / tidur:</span> <input class="w-full bg-orange-50 p-1 border-b border-orange-300"> <div class="answer-key">Contoh: Kucing itu tidur di atas kerusi.</div></div>
+                <div class="p-2 border rounded"><span class="font-bold text-orange-700">4. Adik / menangis:</span> <input class="w-full bg-orange-50 p-1 border-b border-orange-300"> <div class="answer-key">Contoh: Adik menangis kerana lapar.</div></div>
+                <div class="p-2 border rounded"><span class="font-bold text-orange-700">5. Kakak / menyiram:</span> <input class="w-full bg-orange-50 p-1 border-b border-orange-300"> <div class="answer-key">Contoh: Kakak menyiram bunga mawar.</div></div>
+                <div class="p-2 border rounded"><span class="font-bold text-orange-700">6. Kami / berkelah:</span> <input class="w-full bg-orange-50 p-1 border-b border-orange-300"> <div class="answer-key">Contoh: Kami berkelah di tepi pantai.</div></div>
+                <div class="p-2 border rounded"><span class="font-bold text-orange-700">7. Burung / terbang:</span> <input class="w-full bg-orange-50 p-1 border-b border-orange-300"> <div class="answer-key">Contoh: Burung itu terbang tinggi.</div></div>
+                <div class="p-2 border rounded"><span class="font-bold text-orange-700">8. Datuk / akhbar:</span> <input class="w-full bg-orange-50 p-1 border-b border-orange-300"> <div class="answer-key">Contoh: Datuk sedang membaca akhbar.</div></div>
+                <div class="p-2 border rounded"><span class="font-bold text-orange-700">9. Ikan / berenang:</span> <input class="w-full bg-orange-50 p-1 border-b border-orange-300"> <div class="answer-key">Contoh: Ikan emas berenang dalam akuarium.</div></div>
+                <div class="p-2 border rounded"><span class="font-bold text-orange-700">10. Saya / sayang:</span> <input class="w-full bg-orange-50 p-1 border-b border-orange-300"> <div class="answer-key">Contoh: Saya sayang akan keluarga saya.</div></div>
+            </div>
+        </div>
+
+        <!-- SLIDE 10: TAMAT -->
+        <div id="slide-10" class="slide">
+            <div class="text-center py-10">
+                <div class="text-6xl mb-6">🌟🎉</div>
+                <h2 class="text-4xl font-bold text-green-600 mb-4">Tahniah! Anda Telah Tamat.</h2>
+                <p class="text-xl text-gray-600 mb-8">Anda telah menjawab lebih kurang 70 soalan!</p>
+
+                <div class="flex flex-col gap-4 max-w-xs mx-auto no-print">
+                    <button onclick="checkAllAnswers()" class="bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-xl shadow-lg transform transition hover:scale-105 flex items-center justify-center gap-2">
+                        <i class="fas fa-check-circle"></i> Semak Semua Jawapan
+                    </button>
+                    <button onclick="window.print()" class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-3 px-6 rounded-xl shadow-lg flex items-center justify-center gap-2">
+                        <i class="fas fa-print"></i> Cetak / Simpan PDF
+                    </button>
+                    <button onclick="location.reload()" class="bg-red-100 hover:bg-red-200 text-red-600 font-bold py-3 px-6 rounded-xl shadow flex items-center justify-center gap-2">
+                        <i class="fas fa-redo"></i> Mula Semula
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation Buttons -->
+        <div class="nav-buttons flex justify-between mt-auto pt-6 border-t border-gray-100 no-print">
+            <button id="prevBtn" onclick="changeSlide(-1)" class="px-6 py-2 rounded-lg bg-gray-200 text-gray-700 font-bold hover:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed">
+                <i class="fas fa-arrow-left mr-2"></i> Kembali
+            </button>
+            <button id="nextBtn" onclick="changeSlide(1)" class="px-6 py-2 rounded-lg bg-blue-600 text-white font-bold hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed">
+                Seterusnya <i class="fas fa-arrow-right ml-2"></i>
+            </button>
+        </div>
+
+    </div>
+
+    <script>
+        let currentSlide = 1;
+        const totalSlides = 10;
+
+        function updateUI() {
+            document.querySelectorAll('.slide').forEach(el => el.classList.remove('active'));
+            document.getElementById(`slide-${currentSlide}`).classList.add('active');
+            const progress = ((currentSlide) / totalSlides) * 100;
+            document.getElementById('progress-bar').style.width = `${progress}%`;
+            document.getElementById('slide-count').innerText = `${currentSlide} / ${totalSlides}`;
+            document.getElementById('prevBtn').disabled = currentSlide === 1;
+            document.getElementById('nextBtn').style.display = currentSlide === totalSlides ? 'none' : 'block';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function changeSlide(direction) {
+            if (direction === 1 && currentSlide < totalSlides) currentSlide++;
+            else if (direction === -1 && currentSlide > 1) currentSlide--;
+            updateUI();
+        }
+
+        function checkAllAnswers() {
+            document.querySelectorAll('.answer-key').forEach(el => el.style.display = 'block');
+
+            // Dropdowns (Exact Match)
+            document.querySelectorAll('select[data-ans]').forEach(select => {
+                if(select.value === select.dataset.ans) select.classList.add('border-green-500', 'bg-green-50', 'text-green-700');
+                else select.classList.add('border-red-500', 'bg-red-50');
+            });
+
+            // Inputs (Contains Keyword)
+            document.querySelectorAll('input[data-ans]').forEach(input => {
+                const userVal = input.value.trim().toLowerCase();
+                const correctVal = input.dataset.ans.toLowerCase();
+                if(userVal.includes(correctVal)) {
+                    input.classList.add('border-green-500', 'text-green-700', 'font-bold');
+                    input.classList.remove('border-red-500');
+                } else {
+                    input.classList.add('border-red-500', 'text-red-700');
+                    input.classList.remove('border-green-500');
+                }
+            });
+
+            alert("Semakan selesai! Sila semak jawapan yang ditandakan.");
+        }
+
+        // --- Navigasi Papan Kekunci (Keyboard Support) ---
+        document.addEventListener('keydown', function(event) {
+            // Elakkan tukar slaid jika murid sedang menaip dalam input/textarea
+            const tag = document.activeElement.tagName;
+            if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') {
+                return;
+            }
+
+            if (event.key === 'ArrowRight') {
+                // Tekan Kanan: Seterusnya
+                changeSlide(1);
+            } else if (event.key === 'ArrowLeft') {
+                // Tekan Kiri: Kembali
+                changeSlide(-1);
+            }
+        });
+
+        updateUI();
+    </script>
+</body>
+</html>
